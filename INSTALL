@@ -1,0 +1,89 @@
+Compilation and installation of PopART requires that you first install Qt4, Marble 
+(library version >= 0.17.0, part of KDE 4.12), and lp_solve 5.5.2. These are available as 
+packages for most Linux distributions. Package names are given for some major Linux 
+distributions below.
+
+Debian/Ubuntu*:
+libqt4-dev
+libmarble-dev
+lp-solve
+liblpsolve55-dev
+
+Fedora:
+qt4-devel
+lpsolve-devel
+marble-devel
+
+Arch:
+qt
+lpsolve
+kdeedu-marble
+
+Gentoo:
+sci-mathematics/lpsolve
+x11-libs/qt4-meta
+kde-base/marble (if you're not running KDE, you might want to use -kde -plasma use flags)
+
+If you're using a different distribution, or if any of these names are wrong, please
+let me know: jessica.w.leigh@gmail.com
+
+=========================================================================================
+*For Debian or Ubuntu users, if you install lp-solve and liblpsolve55-dev using the apt
+system, you'll need to modify the popart.pro project file before running qmake.
+Look for the first line that reads:
+
+LIBS += -llpsolve55 -lmarblewidget
+
+Note that there are two lines like this, you want the first, NOT THE ONE THAT FOLLOWS
+SHORTLY AFTER "macx{". Edit this line so that it reads instead:
+
+LIBS += -L/usr/lib/lp_solve/ -llpsolve55 -lmarblewidget -ldl
+
+Then add the following line after:
+
+QMAKE_RPATHDIR += /usr/lib/lp_solve/
+
+As far as I know, this only affects Debian/Ubuntu and probably other Debian-related
+distributions. 
+==========================================================================================
+
+You can also download the sources for lp_solve from 
+http://sourceforge.net/projects/lpsolve/files/lpsolve/ and Qt4 from 
+http://qt-project.org/downloads, and compile and install them yourself. Marble is 
+available from a Git repository, with download, compilation, and installation instructions 
+given here: http://marble.kde.org/sources.php
+
+Once you've installed these packages, you're ready to compile PopART. Normally this
+involves running the command:
+
+qmake && make
+
+or maybe (for Arch users at least):
+qmake-qt4 && make
+
+However, if you've installed the lpsolve or Marble headers somewhere other than 
+/usr/include/lpsolve and /usr/include/marble, you'll have to tell qmake where they are. 
+You can do this by running the commands:
+
+qmake -makefile LPSOLVEDIR=/path/to/lpsolve/lpsolve MARBLEDIR=/path/to/marble popart.pro
+make
+
+Note that the lpsolve path should probably end in "lpsolve", and the Marble path should end 
+in "marble". For example, if your lpsolve headers are in /opt/headers/lpsolve, and your 
+Marble headers are in /opt/headers/marble, you should use:
+
+qmake -makefile LPSOLVEDIR=/opt/headers/lpsolve MARBLEDIR=/opt/headers/marble popart.pro
+
+If this doesn't work, please email me (jessica.w.leigh@gmail.com) and I'll help you
+sort it out.
+
+If make completes without any errors, congratulations! You should now have a working
+copy of PopART. Run it with:
+
+./popart
+
+Or copy it somewhere useful, like /usr/local/bin or /home/yourname/bin.
+
+
+
+
