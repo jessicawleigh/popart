@@ -32,16 +32,16 @@ let me know: jessica.w.leigh@gmail.com
 system, you'll need to modify the popart.pro project file before running qmake.
 Look for the first line that reads:
 
-LIBS += -llpsolve55 -lmarblewidget
+  LIBS += -llpsolve55 -lmarblewidget
 
 Note that there are two lines like this, you want the first, NOT THE ONE THAT FOLLOWS
 SHORTLY AFTER "macx{". Edit this line so that it reads instead:
 
-LIBS += -L/usr/lib/lp_solve/ -llpsolve55 -lmarblewidget -ldl
+  LIBS += -L/usr/lib/lp_solve/ -llpsolve55 -lmarblewidget -ldl
 
-Then add the following line after:
+and add the line:
 
-QMAKE_RPATHDIR += /usr/lib/lp_solve/
+  QMAKE_RPATHDIR += /usr/lib/lp_solve/
 
 As far as I know, this only affects Debian/Ubuntu and probably other Debian-related
 distributions. 
